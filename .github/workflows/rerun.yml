@@ -1,0 +1,22 @@
+name: Rerun on completion
+
+on:
+  workflow_run:
+    workflows:
+      - Scheduled GSheet Updates
+    types:
+      - completed
+
+jobs:
+  rerun:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Run Workflow
+        uses: ./.github/workflows/run_work.yml
+        with:
+          matrix.config.platform: 'iOS'
+          matrox.config.platform: 'android'
