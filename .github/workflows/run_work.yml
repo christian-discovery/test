@@ -12,7 +12,23 @@ jobs:
   update_gsheet:
     strategy:
       matrix:
-        platform: [iOS, android]
+        config:
+          - platform: iOS
+            device: qoe_us_ipad
+          - platform: iOS
+            device: qoe_us_iphone11promax
+          - platform: iOS
+            device: qoe_us_iphone12pro
+          - platform: iOS
+            device: qoe_us_iphone13mini
+          - platform: android
+            device: qoe_us_googlepixel3
+          - platform: android
+            device: qoe_us_sgnote10
+          - platform: android
+            device: qoe_us_oneplus6t
+          - platform: android
+            device: qoe_us_sgs10
     runs-on: ubuntu-latest
 
     steps:
@@ -48,7 +64,8 @@ jobs:
         ACTION_NUMBER: ${{ steps.action_details.outputs.action_number }}
         ACTION_LINK: ${{ steps.action_details.outputs.action_link }}
         ACTION_DURATION: ${{ steps.action_details.outputs.action_duration }}
-        PLATFORM: ${{ matrix.platform }}
+        PLATFORM: ${{ matrix.config.platform }}
+        DEVICE: ${{ matrix.config.device }}
       run: |
         export GOOGLE_APPLICATION_CREDENTIALS_FILE="google_application_credentials.json"
         echo "$GOOGLE_APPLICATION_CREDENTIALS" > "$GOOGLE_APPLICATION_CREDENTIALS_FILE"
