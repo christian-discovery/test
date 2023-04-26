@@ -2,7 +2,7 @@ name: Scheduled GSheet Update
 
 on:
   schedule:
-    - cron: '0 0 * * *' # Runs daily at 00:00 UTC
+    - cron: '50 5 * * *' # Runs daily at 00:00 UTC
 
 jobs:
   update_gsheet:
