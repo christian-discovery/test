@@ -70,3 +70,17 @@ jobs:
         export GOOGLE_APPLICATION_CREDENTIALS_FILE="google_application_credentials.json"
         echo "$GOOGLE_APPLICATION_CREDENTIALS" > "$GOOGLE_APPLICATION_CREDENTIALS_FILE"
         python write_to_gsheet.py
+        
+  trigger_rerun:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Run workflow
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        OWNER: christian-discovery
+        REPO: test
+        WORKFLOW_NAME: Scheduled GSheet Update
+      run: |
+        curl -X POST -H "Accept: application/vnd.github.everest-preview+json" -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/$OWNER/$REPO/actions/workflows/$WORKFLOW_NAME/dispatches -d '{"ref":"main"}'
