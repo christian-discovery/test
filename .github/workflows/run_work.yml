@@ -26,6 +26,13 @@ jobs:
         python -m pip install --upgrade pip
         pip install google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client
 
+    - name: Get GitHub Action details
+      id: action_details
+      run: |
+        echo "::set-output name=action_number::${{ github.run_number }}"
+        echo "::set-output name=action_link::https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+        echo "::set-output name=action_duration::$(expr $(date +%s) - ${{ github.event.timestamp }})"
+
     - name: Write to Google Sheet
       env:
         GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
@@ -33,4 +40,4 @@ jobs:
       run: |
         export GOOGLE_APPLICATION_CREDENTIALS_FILE="google_application_credentials.json"
         echo "$GOOGLE_APPLICATION_CREDENTIALS" > "$GOOGLE_APPLICATION_CREDENTIALS_FILE"
-        python write_to_gsheet.py
+        python write_to_gsheet.py ${{ steps.action_details.outputs.action_number }} ${{ steps.action_details.outputs.action_link }} ${{ steps.action_details.outputs.action_duration }}
