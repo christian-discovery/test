@@ -14,13 +14,13 @@ jobs:
       matrix:
         config:
           - platform: iOS
-            device: qoe_us_ipad
+            device: qoe_stg_iphone14pro
           - platform: iOS
-            device: qoe_us_iphone11promax
+            device: qoe_stg_iphone14
           - platform: iOS
-            device: qoe_us_iphone12pro
+            device: qoe_stg_iphone12mini
           - platform: iOS
-            device: qoe_us_iphone13mini
+            device: qoe_stg_iphone11promax
           - platform: android
             device: qoe_us_googlepixel3
           - platform: android
