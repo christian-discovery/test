@@ -28,7 +28,7 @@ def main():
     action_duration = os.environ['ACTION_DURATION']
 
     write_to_gsheet(sheet_id, range_name, platform, device, action_number, action_link, action_duration)
-
-    if __name__ == '__main__':
+    
+if __name__ == '__main__':
     main()
 
