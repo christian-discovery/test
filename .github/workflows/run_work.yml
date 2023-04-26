@@ -44,7 +44,10 @@ jobs:
       env:
         GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
         SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
+        ACTION_NUMBER: ${{ steps.action_details.outputs.action_number }}
+        ACTION_LINK: ${{ steps.action_details.outputs.action_link }}
+        ACTION_DURATION: ${{ steps.action_details.outputs.action_duration }}
       run: |
         export GOOGLE_APPLICATION_CREDENTIALS_FILE="google_application_credentials.json"
         echo "$GOOGLE_APPLICATION_CREDENTIALS" > "$GOOGLE_APPLICATION_CREDENTIALS_FILE"
-        python write_to_gsheet.py ${{ steps.action_details.outputs.action_number }} ${{ steps.action_details.outputs.action_link }} ${{ steps.action_details.outputs.action_duration }}
+        python write_to_gsheet.py
