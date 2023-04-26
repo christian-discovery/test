@@ -17,14 +17,15 @@ def write_to_gsheet(sheet_id, range_name, action_number, action_link, action_dur
 
     print(f"{result.get('updatedCells')} cells updated.")
 
-def main(action_number, action_link, action_duration):
+def main():
     sheet_id = os.environ['SPREADSHEET_ID']
     range_name = 'Sheet1!A1'  # Update this to the desired cell range
+
+    action_number = os.environ['ACTION_NUMBER']
+    action_link = os.environ['ACTION_LINK']
+    action_duration = os.environ['ACTION_DURATION']
+
     write_to_gsheet(sheet_id, range_name, action_number, action_link, action_duration)
 
 if __name__ == '__main__':
-    import sys
-    action_number = sys.argv[1]
-    action_link = sys.argv[2]
-    action_duration = sys.argv[3]
-    main(action_number, action_link, action_duration)
+    main()
