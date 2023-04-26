@@ -1,4 +1,4 @@
-name: Scheduled GSheet Update
+name: Scheduled GSheet Updates
 
 on:
   push:
@@ -75,3 +75,12 @@ jobs:
         export GOOGLE_APPLICATION_CREDENTIALS_FILE="google_application_credentials.json"
         echo "$GOOGLE_APPLICATION_CREDENTIALS" > "$GOOGLE_APPLICATION_CREDENTIALS_FILE"
         python write_to_gsheet.py
+
+    # Retry the job if it fails
+    # Rerun the workflow 3 times after completion
+    retry:
+      max-runs: 3
+      # Set the delay between retry attempts to 5 minutes (300 seconds)
+      delay: 300
+      when:
+        always
