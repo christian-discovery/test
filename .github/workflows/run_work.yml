@@ -57,7 +57,6 @@ jobs:
         echo "::set-output name=action_number::${{ github.run_number }}"
         echo "::set-output name=action_link::https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
         echo "::set-output name=action_duration::$action_duration"
-
     - name: Write to Google Sheet
       env:
         GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
@@ -71,18 +70,3 @@ jobs:
         export GOOGLE_APPLICATION_CREDENTIALS_FILE="google_application_credentials.json"
         echo "$GOOGLE_APPLICATION_CREDENTIALS" > "$GOOGLE_APPLICATION_CREDENTIALS_FILE"
         python write_to_gsheet.py
-
-    - name: Rerun job
-      if: always()
-      env:
-        MAX_RUNS: 3
-      run: |
-        if [ ${{ job.status }} == 'failure' ] && [ ${{ env.RUN_COUNT }} -lt ${{ env.MAX_RUNS }} ]; then
-          echo "Rerunning job (${{ env.RUN_COUNT }})..."
-          export RUN_COUNT=$((${RUN_COUNT} + 1))
-          sleep $(( (${RUN_COUNT}-1)*60 )) # wait 1 minute between each retry
-          git config --global user.email "actions@github.com"
-          git config --global user.name "GitHub Actions"
-          git checkout -B ${{ github.ref }}
-          git merge --no-ff ${{ github.sha }}
-          git push origin ${{ github.sha }}
