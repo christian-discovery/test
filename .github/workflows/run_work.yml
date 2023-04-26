@@ -26,6 +26,9 @@ jobs:
         python -m pip install --upgrade pip
         pip install google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client
 
+    - name: Install jq
+      run: sudo apt-get install jq
+
     - name: Get GitHub Action details
       id: action_details
       env:
