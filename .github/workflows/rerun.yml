@@ -1,22 +1,51 @@
-name: Rerun on completion
+name: Rerun
 
 on:
   workflow_run:
-    workflows:
-      - Scheduled GSheet Updates
-    types:
+    workflows: run_work.yml
+    types: 
       - completed
 
 jobs:
   rerun:
     runs-on: ubuntu-latest
-
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event.workflow_run.conclusion == 'completed' || github.event.workflow_run.conclusion == 'failed' }}
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: Run Workflow
-        uses: ./.github/workflows/run_work.yml
-        with:
-          matrix.config.platform: 'iOS'
-          matrox.config.platform: 'android'
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client
+    - name: Install jq
+      run: sudo apt-get install jq
+
+    - name: Get GitHub Action details
+      id: action_details
+      env:
+        GITHUB_EVENT_PATH: ${{ github.event_path }}
+      run: |
+        action_timestamp=$(jq -r '.action.timestamp' $GITHUB_EVENT_PATH)
+        action_duration=$(( $(date +%s) - $(date -d "$action_timestamp" +%s) ))
+        echo "::set-output name=action_number::${{ github.run_number }}"
+        echo "::set-output name=action_link::https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+        echo "::set-output name=action_duration::$action_duration"
+    - name: Write to Google Sheet
+      env:
+        GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+        SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
+        ACTION_NUMBER: ${{ steps.action_details.outputs.action_number }}
+        ACTION_LINK: ${{ steps.action_details.outputs.action_link }}
+        ACTION_DURATION: ${{ steps.action_details.outputs.action_duration }}
+        PLATFORM: ${{ matrix.config.platform }}
+        DEVICE: ${{ matrix.config.device }}
+      run: |
+        export GOOGLE_APPLICATION_CREDENTIALS_FILE="google_application_credentials.json"
+        echo "$GOOGLE_APPLICATION_CREDENTIALS" > "$GOOGLE_APPLICATION_CREDENTIALS_FILE"
+        python write_to_gsheet.py
