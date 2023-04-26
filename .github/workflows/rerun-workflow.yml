@@ -1,0 +1,16 @@
+name: Rerun Workflow
+
+on:
+  repository_dispatch:
+    types: [trigger-rerun]
+
+jobs:
+  rerun-workflow:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Run workflow
+      run: |
+        # Replace workflow-name with the name of your workflow
+        curl -X POST -H "Accept: application/vnd.github.everest-preview+json" -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/christian-discovery/test/actions/workflows/workflow-name/dispatches -d '{"ref":"master"}'
