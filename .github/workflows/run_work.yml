@@ -7,11 +7,6 @@ on:
   pull_request:
     branches:
       - main
-  workflow_run:
-    workflows:
-      - Scheduled GSheet Updates
-    types:
-      - completed
 
 jobs:
   update_gsheet:
@@ -75,11 +70,3 @@ jobs:
         export GOOGLE_APPLICATION_CREDENTIALS_FILE="google_application_credentials.json"
         echo "$GOOGLE_APPLICATION_CREDENTIALS" > "$GOOGLE_APPLICATION_CREDENTIALS_FILE"
         python write_to_gsheet.py
-
-    - name: Rerun workflow
-      uses: peter-evans/repository-dispatch@v1
-      with:
-        token: ${{ secrets.REPO_ACCESS_TOKEN }}
-        repository: ${{ github.repository }}
-        event-type: workflow_dispatch
-        client-payload: '{"delayed": "10s", "rerun": 3}' # rerun the workflow 3 times with a delay of 10 seconds
