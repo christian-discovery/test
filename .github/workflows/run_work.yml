@@ -1,4 +1,4 @@
-name: Scheduled GSheet Update
+name: Scheduled GSheet Updates
 
 on:
   push:
