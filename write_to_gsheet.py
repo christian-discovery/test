@@ -15,7 +15,7 @@ def write_to_gsheet(sheet_id, range_name, values):
     print(f"{result.get('updatedCells')} cells updated.")
 
 def main():
-    print("test test: " + action_number + " " + action_link + " " + sys.argv)
+    print("test test: " + sys.argv)
     action_number = sys.argv[1]
     action_link = sys.argv[2]
     action_duration = sys.argv[3]
