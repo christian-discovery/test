@@ -28,10 +28,14 @@ jobs:
 
     - name: Get GitHub Action details
       id: action_details
+      env:
+        GITHUB_EVENT_PATH: ${{ github.event_path }}
       run: |
+        action_timestamp=$(jq -r '.action.timestamp' $GITHUB_EVENT_PATH)
+        action_duration=$(( $(date +%s) - $(date -d "$action_timestamp" +%s) ))
         echo "::set-output name=action_number::${{ github.run_number }}"
         echo "::set-output name=action_link::https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-        echo "::set-output name=action_duration::$(expr $(date +%s) - ${{ github.event.timestamp }})"
+        echo "::set-output name=action_duration::$action_duration"
 
     - name: Write to Google Sheet
       env:
