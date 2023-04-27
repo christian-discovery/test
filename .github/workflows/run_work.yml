@@ -9,7 +9,9 @@ on:
     branches:
       - main
       - keith-branch
-
+  workflow_run:
+    workflows: ["Trial"]
+    
 jobs:
   update_gsheet:
     strategy:
@@ -72,3 +74,4 @@ jobs:
         export GOOGLE_APPLICATION_CREDENTIALS_FILE="google_application_credentials.json"
         echo "$GOOGLE_APPLICATION_CREDENTIALS" > "$GOOGLE_APPLICATION_CREDENTIALS_FILE"
         python write_to_gsheet.py
+    if: ${{ always() }}
