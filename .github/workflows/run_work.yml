@@ -30,7 +30,7 @@ jobs:
           - platform: android
             device: qoe_us_oneplus6t
           - platform: android
-            device: qoe_us_sgs10
+            device: qoe_us_sgs20
     runs-on: ubuntu-latest
 
     steps:
