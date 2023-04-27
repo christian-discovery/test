@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - main
+      - keith-branch
   pull_request:
     branches:
       - main
+      - keith-branch
 
 jobs:
   update_gsheet:
