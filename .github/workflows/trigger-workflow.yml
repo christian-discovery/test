@@ -14,7 +14,7 @@ jobs:
       - name: Trigger Workflow
         uses: peter-evans/repository-dispatch@v1
         with:
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          repository: ${{ github.repository }}
+          token: secret.PAT
+          repository: test
           event-type: trigger-workflow
           client-payload: '{"workflow": "My Workflow Name"}'
