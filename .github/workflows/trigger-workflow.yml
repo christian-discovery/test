@@ -1,20 +1,17 @@
-name: Trigger Workflow
-
+name: Auto-Trigger Workflow
 on:
   workflow_run:
     workflows:
-      - 'Trial'
+      - Trial
     types:
       - completed
 
 jobs:
-  trigger:
+  auto_trigger_job:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Workflow
-        uses: peter-evans/repository-dispatch@v1
+        uses: peter-evans/workflow-dispatch@v1
         with:
-          token: secret.PAT
-          repository: test
-          event-type: trigger-workflow
-          client-payload: '{"workflow": "My Workflow Name"}'
+          workflow: Trial
+          token: ${{ secrets.PAT }}
