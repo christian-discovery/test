@@ -1,4 +1,4 @@
-name: Scheduled GSheet Updates
+name: trial and error
 
 on:
   push:
