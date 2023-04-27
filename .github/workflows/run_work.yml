@@ -9,6 +9,7 @@ on:
     branches:
       - main
       - keith-branch
+  workflow_dispatch:
 
 jobs:
   update_gsheet:
@@ -72,3 +73,14 @@ jobs:
         export GOOGLE_APPLICATION_CREDENTIALS_FILE="google_application_credentials.json"
         echo "$GOOGLE_APPLICATION_CREDENTIALS" > "$GOOGLE_APPLICATION_CREDENTIALS_FILE"
         python write_to_gsheet.py
+
+  rerun_workflow:
+    needs: update_gsheet
+    runs-on: ubuntu-latest
+    steps:
+    - name: Trigger workflow
+      uses: peter-evans/repository-dispatch@v1
+      with:
+        token: ${{ secrets.PAT }} # Personal access token with repo scope
+        repository: ${{ github.repository }}
+        event-type: trial-rerun # The event type to trigger
