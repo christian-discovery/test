@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Workflow
-        uses: peter-evans/workflow-dispatch@v1
+        uses: christian-discovery/workflow-dispatch@v1
         with:
           workflow: Trial
           token: ${{ secrets.PAT }}
