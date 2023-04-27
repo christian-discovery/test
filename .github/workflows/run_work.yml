@@ -82,5 +82,5 @@ jobs:
       uses: peter-evans/repository-dispatch@v1
       with:
         token: ${{ secrets.PAT }} # Personal access token with repo scope
-        repository: ${{ github.repository }}
+        repository: ${{ github.christian-discovery }}
         event-type: trial-rerun # The event type to trigger
