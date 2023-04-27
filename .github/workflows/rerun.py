@@ -1,13 +1,16 @@
 import requests
+import json
 
 # Set up variables
 repo_owner = christian-discovery
 repo_name = test
 workflow_name = run_work.yml
 personal_access_token = secret.token
+event_type = "push"
+ref = "refs/heads/main"
 
 # Set up the request URL
-url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/actions/workflows/{workflow_name}/dispatches"
+url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/actions/workflows/{workflow_id}/dispatches"
 
 # Set up the request headers
 headers = {
@@ -17,7 +20,10 @@ headers = {
 
 # Set up the request payload
 payload = {
-    "ref": "main"
+    "ref": ref,
+    "inputs": {
+        "event_type": event_type
+    }
 }
 
 # Send the POST request to trigger the workflow
