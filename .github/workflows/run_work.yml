@@ -9,9 +9,7 @@ on:
     branches:
       - main
       - keith-branch
-  workflow_run:
-    workflows: ["Trial"]
-    
+ 
 jobs:
   update_gsheet:
     strategy:
