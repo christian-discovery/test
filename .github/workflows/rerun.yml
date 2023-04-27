@@ -1,19 +1,18 @@
-name: Rerun Workflow on Completion
-
+name: Rerun Workflow
 on:
   workflow_run:
-    workflows: Scheduled GSheet Updates
+    workflows:
+      - run_work.yml
     types:
       - completed
 
 jobs:
-  rerun:
+  rerun-workflow:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-    - name: Rerun workflow
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        curl -X POST -H "Accept: application/vnd.github.everest-preview+json" -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/christian-discovery/test/actions/workflows/run_work.yml/dispatches -d '{"ref":"main"}'
+      - name: Rerun Workflow
+        uses: peter-evans/workflow-run-conclusion@v1
+        with:
+          token: secret.token
+          conclusion: success
+          rerun: true
