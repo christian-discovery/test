@@ -9,10 +9,14 @@ on:
 jobs:
   auto_trigger_job:
     runs-on: ubuntu-latest
-    container: docker://docker.pkg.github.com/peter-evans/workflow-dispatch/workflow-dispatch:latest
     steps:
+      - name: Authenticate with GitHub Packages
+        run: echo "${{ secrets.PAT }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
       - name: Trigger Workflow
         env:
-          GITHUB_TOKEN: ${{ secrets.PAT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          /entrypoint.sh Trial
+          docker run --rm \
+            -e GITHUB_TOKEN \
+            docker.pkg.github.com/peter-evans/workflow-dispatch/workflow-dispatch:latest \
+            Your Workflow Name
